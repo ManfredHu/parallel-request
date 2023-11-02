@@ -1,4 +1,4 @@
-import ParallelTask from "./parallel";
+import { ParallelTask } from "./parallel";
 import "./App.css";
 
 const mockRequestWithRandom = (time: number) => {
@@ -11,7 +11,15 @@ const mockRequestWithRandom = (time: number) => {
 
 function App() {
   const run = () => {
-    const parallelInstance = new ParallelTask();
+    let i = 0
+    const parallelInstance = new ParallelTask({
+      oneTaskFinish: (options) => {
+        console.log('oneTaskFinish options', options)
+      },
+      allTaskFinish: (options) => {
+        console.log('allTaskFinish options', options)
+      },
+    });
     function addTask(time: number, name: number) {
       console.log(`添加任务${name}`, new Date().getTime())
       parallelInstance
