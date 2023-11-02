@@ -1,38 +1,27 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import ParallelTask from "./parallel";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
+const mockRequestWithRandom = () => {
+  return new Promise((resolve) => {
+    const randomTime = Math.floor(Math.random() * 10) * 1000;
+    console.log("随机函数等待:", randomTime);
+    setTimeout(() => {
+      console.log("函数执行: ", randomTime);
+      resolve(undefined);
+    }, randomTime);
+  });
+};
 
+function App() {
+  const run = () => {
+    const parallelInstance = new ParallelTask();
+    for (let i = 0; i < 10; i++) {
+      parallelInstance.add(() => mockRequestWithRandom());
+    }
+  };
   return (
     <div className="App">
-      <div>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-      </div>
-      <h1>React + Vite</h1>
-      <h2>On CodeSandbox!</h2>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR.
-        </p>
-
-        <p>
-          Tip: you can use the inspector button next to address bar to click on
-          components in the preview and open the code in the editor!
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <button onClick={run}>点击运行</button>
     </div>
   );
 }
