@@ -21,7 +21,6 @@ export default class ParallelTask {
         reject,
         task,
       });
-      console.log("当前队列", this.taskQueue.length);
       this._run();
     });
   }
@@ -32,14 +31,13 @@ export default class ParallelTask {
       this.taskQueue.length > 0
     ) {
       const { resolve, reject, task } = this.taskQueue.shift() as TaskItem;
+      this.runningTaskCount++;
       task()
         .then(resolve, reject)
         .finally(() => {
           this.runningTaskCount--;
+          this._run(); // 递归
         });
     }
-  }
-  then() {
-    debugger;
   }
 }
